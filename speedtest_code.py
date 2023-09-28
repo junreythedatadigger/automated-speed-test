@@ -20,7 +20,8 @@ def record_speed_test_results(filename, download_speed, upload_speed, ping):
         writer.writerow([current_time, download_speed, upload_speed, ping])
 
 # Main function to schedule and record speed tests
-def main(interval_minutes, num_tests):
+# def main(interval_minutes, num_tests):
+def main(interval_seconds, num_tests):
     filename = 'speed_test_results.csv'
     
     # Create or append to the CSV file with headers if it doesn't exist
@@ -33,9 +34,12 @@ def main(interval_minutes, num_tests):
         download_speed, upload_speed, ping = perform_speed_test()
         record_speed_test_results(filename, download_speed, upload_speed, ping)
         print(f'Test {_+1}: Download Speed: {download_speed:.2f} Mbps, Upload Speed: {upload_speed:.2f} Mbps, Ping: {ping} ms')
-        time.sleep(interval_minutes * 60)
+        # time.sleep(interval_minutes * 60)
+        time.sleep(interval_seconds)
 
 if __name__ == "__main__":
-    interval_minutes = 1  # Adjust the interval (in minutes) between tests. Default is 30
+    # interval_minutes = 1  # Adjust the interval (in minutes) between tests. Default is 30
+    interval_seconds = 5  # Adjust the interval (in minutes) between tests. Default is 30
     num_tests = 5  # Adjust the number of tests to perform in a day. Default is 24
-    main(interval_minutes, num_tests)
+    # main(interval_minutes, num_tests)
+    main(interval_seconds, num_tests)
