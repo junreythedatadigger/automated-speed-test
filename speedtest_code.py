@@ -18,6 +18,7 @@ def record_speed_test_results(filename, download_speed, upload_speed, ping):
     with open(filename, mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([current_time, download_speed, upload_speed, ping])
+        return current_time
 
 # Main function to schedule and record speed tests
 # def main(interval_minutes, num_tests):
@@ -32,8 +33,10 @@ def main(interval_seconds, num_tests):
 
     for _ in range(num_tests):
         download_speed, upload_speed, ping = perform_speed_test()
-        record_speed_test_results(filename, download_speed, upload_speed, ping)
-        print(f'Test {_+1}: Download Speed: {download_speed:.2f} Mbps, Upload Speed: {upload_speed:.2f} Mbps, Ping: {ping} ms')
+        # record_speed_test_results(filename, download_speed, upload_speed, ping)
+        current_time = record_speed_test_results(filename, download_speed, upload_speed, ping)
+        # print(f'Test {_+1}: Download Speed: {download_speed:.2f} Mbps, Upload Speed: {upload_speed:.2f} Mbps, Ping: {ping} ms')
+        print(f'Test {_+1}: Timestamp: {current_time}: Download Speed: {download_speed:.2f} Mbps, Upload Speed: {upload_speed:.2f} Mbps, Ping: {ping} ms')
         # time.sleep(interval_minutes * 60)
         time.sleep(interval_seconds)
 
