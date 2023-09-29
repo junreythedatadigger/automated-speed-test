@@ -23,7 +23,8 @@ def record_speed_test_results(filename, download_speed, upload_speed, ping):
 # Main function to schedule and record speed tests
 # def main(interval_minutes, num_tests):
 def main(interval_seconds, num_tests):
-    filename = 'speed_test_results.csv'
+    # filename = 'speed_test_results.csv'
+    filename = 'speed_test_results_PNPh-3rd_LAN.csv'
     
     # Create or append to the CSV file with headers if it doesn't exist
     with open(filename, mode='a', newline='') as file:
@@ -42,7 +43,7 @@ def main(interval_seconds, num_tests):
 
 if __name__ == "__main__":
     # interval_minutes = 1  # Adjust the interval (in minutes) between tests. Default is 30
-    interval_seconds = 5  # Adjust the interval (in minutes) between tests. Default is 30
-    num_tests = 5  # Adjust the number of tests to perform in a day. Default is 24
+    interval_seconds = 60  # Adjust the interval (in minutes) between tests. Default is 30
+    num_tests = 540  # Approximately 9 hours. Adjust the number of tests to perform in a day. Default is 24
     # main(interval_minutes, num_tests)
     main(interval_seconds, num_tests)
