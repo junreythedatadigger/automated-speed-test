@@ -31,7 +31,7 @@ def perform_speed_test(filename, interval_seconds):
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")                  # Capture time after speedtest execution
 
         # Print the output in the terminal
-        print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps, Ping: {ping_ms} ms')
+        print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Ping: {ping_ms} ms, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps')
         
         t1 = datetime.strptime(time_at_request[11:], "%H:%M:%S")            # Format time to strptime formats
         t2 = datetime.strptime(current_time[11:], "%H:%M:%S")               # Format time to strptime formats
@@ -39,22 +39,22 @@ def perform_speed_test(filename, interval_seconds):
         adjusted_interval_seconds = datetime.strptime(str(interval_seconds), "%S") - delta  # Adjust delay of succeeding speedtest execution
 
         # Execute recording of the data to the CSV file
-        record_speed_test_results(filename, current_time, source_isp, source_ip, target_isp, target_km, download_speed, upload_speed, ping_ms)
+        record_speed_test_results(filename, current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed)
 
         time.sleep(int(adjusted_interval_seconds.strftime("%S")))   # Apply the adjusted time delay for next speedtest execution
 
 # The function to insert the speedtest results to the CSV file
-def record_speed_test_results(filename, current_time, source_isp, source_ip, target_isp, target_km, download_speed, upload_speed, ping_ms):
+def record_speed_test_results(filename, current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed):
     with open(filename, mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([current_time, source_isp, source_ip, target_isp, target_km, download_speed, upload_speed, ping_ms])
+        writer.writerow([current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed])
 
 # The main method to call the other methods
 def main(filename, interval_seconds, num_tests):
     with open(filename, mode='a', newline='') as file:
         writer = csv.writer(file)
         if file.tell() == 0:
-            writer.writerow(['Timestamp', 'Source ISP', 'Source IP', 'Target ISP', 'Target Distance (km)', 'Download Speed (Mbps)', 'Upload Speed (Mbps)' ,'Ping (ms)'])
+            writer.writerow(['Timestamp', 'Source ISP', 'Source IP', 'Target ISP', 'Target Distance (km)' ,'Ping (ms)', 'Download Speed (Mbps)', 'Upload Speed (Mbps)'])
     for _ in range(num_tests):
         perform_speed_test(filename, interval_seconds)
 
