@@ -31,6 +31,7 @@ def perform_speed_test(filename, interval_seconds):
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")                  # Capture time after speedtest execution
 
         # Print the output in the terminal
+        # Need to implement try-catch for cases where target_isp is undefined
         print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Ping: {ping_ms} ms, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps')
         
         t1 = datetime.strptime(time_at_request[11:], "%H:%M:%S")            # Format time to strptime formats
