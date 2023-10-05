@@ -94,6 +94,6 @@ def main(interval_seconds, num_tests):
         time.sleep(adjusted_interval_seconds)
 
 if __name__ == "__main__":
-    interval_seconds = 30  # Adjust the interval (in seconds) between tests. Minimum is 30
-    num_tests = 1080        # Approximately 18 hours.
+    interval_seconds = 60  # Adjust the interval (in seconds) between tests. Minimum is 30
+    num_tests = 1440        # Approximately 24 hours.
     main(interval_seconds, num_tests)
