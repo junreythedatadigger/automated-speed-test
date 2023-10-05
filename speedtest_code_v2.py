@@ -7,9 +7,10 @@ import pytz
 # Function to perform a speed test and return the results
 def perform_speed_test(interval_seconds):
 
-    # Get the timestamp at the start of speedtest request
-    time_at_request = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # Get the timestamp before the speedtest request
+    pre_test_time = datetime.now().timestamp()
 
+    # Attempt to initiate the Speedtest
     try:
         st = speedtest.Speedtest()
         st._secure = True
@@ -48,17 +49,16 @@ def perform_speed_test(interval_seconds):
         ping = st.results.ping  # Ping in milliseconds
 
         # Calculate the adjustment of interval between speedtest request
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")         # Get the timestamp after getting the results
-        t1 = datetime.strptime(time_at_request[11:], "%H:%M:%S")            # Format time to strptime formats
-        t2 = datetime.strptime(current_time[11:], "%H:%M:%S")               # Format time to strptime formats
-        delta = t2 - t1                                                     # Get the difference between time stamps
-        adjusted_interval = datetime.strptime(str(interval_seconds), "%S") - delta  # Adjust delay of succeeding speedtest execution
-        adjusted_interval_seconds = int(adjusted_interval.strftime("%S"))   # Convert the datetime seconds to integer
+        post_test_time = datetime.now().timestamp()     # Get the timestamp after the result of request
+        adjusted_interval_seconds = int(interval_seconds - post_test_time + pre_test_time)
 
         # Return the required values
         return ph_timestamp, client_isp, client_isp_ip, remote_isp, remote_isp_loc, remote_isp_dis, ping, download_speed, upload_speed, adjusted_interval_seconds
-    except:
-        print("error")
+
+    # Print out the error perform function self-call
+    except Exception as error:
+        print(error)
+        # st._timeout = 5
         time.sleep(5)
         perform_speed_test(interval_seconds)
 
@@ -70,6 +70,8 @@ def record_speed_test_results(filename, ph_timestamp, client_isp, client_isp_ip,
 
 # Main function to schedule and record speed tests
 def main(interval_seconds, num_tests):
+    print("Initiating Speedtest")
+
     # filename = 'speed_test_results.csv'
     # filename = 'speed_test_results_PNPh-3rd_LAN.csv'
     filename = 'speed_test_results_PNPh-3rd_Wifi_2023-10-05b.csv'
@@ -94,6 +96,6 @@ def main(interval_seconds, num_tests):
         time.sleep(adjusted_interval_seconds)
 
 if __name__ == "__main__":
-    interval_seconds = 60  # Adjust the interval (in seconds) between tests. Minimum is 30
-    num_tests = 1440        # Approximately 24 hours.
-    main(interval_seconds, num_tests)
+    interval_seconds = 30               # Adjust the interval (in seconds) between tests. Minimum is 30
+    num_tests = 2880                    # Approximately 24 hours.
+    main(interval_seconds, num_tests)   # Call the main function
