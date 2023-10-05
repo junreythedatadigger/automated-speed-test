@@ -93,5 +93,5 @@ def main(interval_seconds, num_tests):
 
 if __name__ == "__main__":
     interval_seconds = 30  # Adjust the interval (in seconds) between tests. Minimum is 30
-    num_tests = 540        # Approximately 9 hours. Adjust the number of tests to perform in a day. Default is 24
+    num_tests = 1080        # Approximately 18 hours.
     main(interval_seconds, num_tests)
