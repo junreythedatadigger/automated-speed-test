@@ -21,9 +21,13 @@ def perform_speed_test(filename, interval_seconds):
                 source_isp = line[13:-4].split("(")[0][:-1]                          # Get the source ISP
                 source_ip = line[13:-4].split("(")[1][:-1]                           # Get the source IP address
             elif index == 4:
-                target_isp = line.split(":")[0][10:].split("[")[0][:-1]              # Get the targer ISP
-                target_km =  float(line.split(":")[0][10:].split("[")[1][:-4])       # Get the target distance in km
-                ping_ms = float(line.split(":")[1][1:-4])                            # Get the _ms in ms
+                try:
+                    target_isp = line.split(":")[0][10:].split("[")[0][:-1]              # Get the targer ISP
+                    target_km =  float(line.split(":")[0][10:].split("[")[1][:-4])       # Get the target distance in km
+                    ping_ms = float(line.split(":")[1][1:-4])                            # Get the _ms in ms
+                except Exception as exception_error:
+                    print(f'Exception error: {exception_error}')
+                    perform_speed_test(filename, interval_seconds)
             elif index == 6:
                 download_speed = float(line.split()[1])                              # Get the download speed in Mbps
             elif index == 8:
