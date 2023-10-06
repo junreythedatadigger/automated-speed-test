@@ -18,8 +18,8 @@ def perform_speed_test(filename, interval_seconds):
     with open('results.txt') as f:                                      # Read the file containing the detailed speedtest results
         for index, line in enumerate(f):                                             # Get each line of characters and provide index
             if index == 1:
-                source_isp = line[13:-4].split("(")[0]                                  # Get the source ISP
-                source_ip = line[13:-4].split("(")[1][1:-1]                             # Get the source IP address
+                source_isp = line[13:-4].split("(")[0][:-1]                          # Get the source ISP
+                source_ip = line[13:-4].split("(")[1][:-1]                           # Get the source IP address
             elif index == 4:
                 target_isp = line.split(":")[0][10:].split("[")[0][:-1]              # Get the targer ISP
                 target_km =  float(line.split(":")[0][10:].split("[")[1][:-4])       # Get the target distance in km
