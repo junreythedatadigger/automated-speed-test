@@ -32,7 +32,15 @@ def perform_speed_test(filename, interval_seconds):
 
         # Print the output in the terminal
         # Need to implement try-catch for cases where target_isp is undefined
-        print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Ping: {ping_ms} ms, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps')
+        # print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Ping: {ping_ms} ms, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps')
+
+        print("")
+        print(f'Timestamp: {time_at_request}')
+        print(f'Client ISP: {source_isp} ({source_ip})')
+        print(f'Remote ISP: {target_isp} - {target_km:.2f} km)')
+        print(f'Ping: {ping_ms:.2f} ms, Download: {download_speed:.2f} Mbps, Upload: {upload_speed:.2f} Mbps')
+        print("")
+
         
         t1 = datetime.strptime(time_at_request[11:], "%H:%M:%S")            # Format time to strptime formats
         t2 = datetime.strptime(current_time[11:], "%H:%M:%S")               # Format time to strptime formats
