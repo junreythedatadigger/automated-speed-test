@@ -43,6 +43,7 @@ def perform_speed_test(filename, interval_seconds):
             print("")
         except Exception as exception_error:
             print(f'Exception error: {exception_error}')
+            time.sleep(5)
             perform_speed_test(filename, interval_seconds)
 
         

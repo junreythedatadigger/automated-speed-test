@@ -43,6 +43,7 @@ def perform_speed_test(filename, interval_seconds):
             print("")
         except Exception as exception_error:
             print(f'Exception error: {exception_error}')
+            time.sleep(5)
             perform_speed_test(filename, interval_seconds)
 
         t1 = datetime.strptime(time_at_request[11:], "%H:%M:%S")            # Format time to strptime formats
