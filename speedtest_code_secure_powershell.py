@@ -75,7 +75,7 @@ def main(filename, interval_seconds, num_tests):
 if __name__ == "__main__":
     filename = 'speed_test_results_PNPh-3rd_Wifi.csv'
     interval_seconds = 30 # minumum of 30 seconds
-    num_tests = 600 # Approvimately 5 hours
+    num_tests = 2400 # Approvimately 20 hours
     main(filename, interval_seconds, num_tests) # Calling the main method
 
 '''
