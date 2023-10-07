@@ -14,7 +14,14 @@ import os
 # The function to automate execution of speedtest in CMD
 def perform_speed_test(filename, interval_seconds):
     time_at_request = datetime.now().strftime("%Y-%m-%d %H:%M:%S")      # Capture time before speedtest execution
-    os.system('speedtest --secure > results.txt')             # Automate speedtest at CMD and store the outputs
+    try:
+        os.system('speedtest --secure > results.txt')             # Automate speedtest at CMD and store the outputs
+    except Exception as connection_error:
+        print(f'{connection_error}')
+        time.sleep(5)
+        print("Restart speedtest")
+        perform_speed_test(filename, interval_seconds)
+
     with open('results.txt') as f:                                      # Read the file containing the detailed speedtest results
         for index, line in enumerate(f):                                             # Get each line of characters and provide index
             if index == 1:
