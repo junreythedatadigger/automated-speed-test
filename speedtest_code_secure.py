@@ -27,15 +27,19 @@ def perform_speed_test(filename, interval_seconds):
         with open('results.txt') as f:                                      # Read the file containing the detailed speedtest results
             for index, line in enumerate(f):                                             # Get each line of characters and provide index
                 if index == 1:
+                    print(f'Length of line at index {index}: {len(line)}')
                     source_isp = line[13:-4].split("(")[0][:-1]                          # Get the source ISP
                     source_ip = line[13:-4].split("(")[1][:-1]                           # Get the source IP address
                 elif index == 4:
+                    print(f'Length of line at index {index}: {len(line)}')
                     target_isp = line.split(":")[0][10:].split("[")[0][:-1]              # Get the targer ISP
                     target_km =  float(line.split(":")[0][10:].split("[")[1][:-4])       # Get the target distance in km
                     ping_ms = float(line.split(":")[1][1:-4])                            # Get the _ms in ms
                 elif index == 6:
+                    print(f'Length of line at index {index}: {len(line)}')
                     download_speed = float(line.split()[1])                              # Get the download speed in Mbps
                 elif index == 8:
+                    print(f'Length of line at index {index}: {len(line)}')
                     upload_speed = float(line.split()[1])                                # Get the upload speed in Mbps
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")                  # Capture time after speedtest execution
 
@@ -43,12 +47,19 @@ def perform_speed_test(filename, interval_seconds):
             # Need to implement try-catch for cases where target_isp is undefined
             # print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Ping: {ping_ms} ms, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps')
 
-            print("")
-            print(f'Timestamp: {time_at_request}')
-            print(f'Client ISP: {source_isp} ({source_ip})')
-            print(f'Remote ISP: {target_isp} - {target_km:.2f} km)')
-            print(f'Ping: {ping_ms:.2f} ms, Download: {download_speed:.2f} Mbps, Upload: {upload_speed:.2f} Mbps')
-            print("")
+            try:
+                print("")
+                print(f'Timestamp: {time_at_request}')
+                print(f'Client ISP: {source_isp} ({source_ip})')
+                print(f'Remote ISP: {target_isp} - {target_km:.2f} km)')
+                print(f'Ping: {ping_ms:.2f} ms, Download: {download_speed:.2f} Mbps, Upload: {upload_speed:.2f} Mbps')
+                print("")
+
+            except Exception as value_error:
+                print(f'{value_error}')
+                time.sleep(5)
+                print("Restart speedtest")
+                perform_speed_test(filename, interval_seconds)
 
             t1 = datetime.strptime(time_at_request[11:], "%H:%M:%S")            # Format time to strptime formats
             t2 = datetime.strptime(current_time[11:], "%H:%M:%S")               # Format time to strptime formats
