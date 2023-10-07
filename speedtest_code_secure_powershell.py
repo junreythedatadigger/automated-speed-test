@@ -72,14 +72,19 @@ def main(filename, interval_seconds, num_tests):
         writer = csv.writer(file)
         if file.tell() == 0:
             writer.writerow(['Timestamp', 'Source ISP', 'Source IP', 'Target ISP', 'Target Distance (km)' ,'Ping (ms)', 'Download Speed (Mbps)', 'Upload Speed (Mbps)'])
-    for _ in range(num_tests):
-        perform_speed_test(filename, interval_seconds)
+    if (num_tests == "unlimited"):
+        while True:
+            perform_speed_test(filename, interval_seconds)
+    else:
+        for _ in range(num_tests):
+            perform_speed_test(filename, interval_seconds)
 
 
 if __name__ == "__main__":
     filename = 'speed_test_results_PNPh-3rd_Wifi.csv'
     interval_seconds = 30 # minumum of 30 seconds
-    num_tests = 2400 # Approvimately 20 hours
+    # num_tests = 2400 # Approvimately 20 hours
+    num_tests = "unlimited"
     main(filename, interval_seconds, num_tests) # Calling the main method
 
 '''
