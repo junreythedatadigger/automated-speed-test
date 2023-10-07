@@ -14,62 +14,58 @@ import os
 # The function to automate execution of speedtest in CMD
 def perform_speed_test(filename, interval_seconds):
     time_at_request = datetime.now().strftime("%Y-%m-%d %H:%M:%S")      # Capture time before speedtest execution
-    try:
-        os.system('cmd /c "speedtest --secure > results.txt" ')             # Automate speedtest at CMD and store the outputs
+    
+    os.system('cmd /c "speedtest --secure > results.txt" ')             # Automate speedtest at CMD and store the outputs
 
-    except Exception as connection_error:
-        print(f'{connection_error}')
-        time.sleep(5)
-        print("Restart speedtest")
-        perform_speed_test(filename, interval_seconds)
+    with open('results.txt') as f:                                      # Read the file containing the detailed speedtest results
+        for index, line in enumerate(f):                                             # Get each line of characters and provide index
+            if index == 1:
+                # print(f'Length of line at index {index}: {len(line)}')
+                source_isp = line[13:-4].split("(")[0][:-1]                          # Get the source ISP
+                source_ip = line[13:-4].split("(")[1][:-1]                           # Get the source IP address
+            elif index == 4:
+                # print(f'Length of line at index {index}: {len(line)}')
+                target_isp = line.split(":")[0][10:].split("[")[0][:-1]              # Get the targer ISP
+                target_km =  float(line.split(":")[0][10:].split("[")[1][:-4])       # Get the target distance in km
+                ping_ms = float(line.split(":")[1][1:-4])                            # Get the _ms in ms
+            elif index == 6:
+                # print(f'Length of line at index {index}: {len(line)}')
+                download_speed = float(line.split()[1])                              # Get the download speed in Mbps
+            elif index == 8:
+                # print(f'Length of line at index {index}: {len(line)}')
+                upload_speed = float(line.split()[1])                                # Get the upload speed in Mbps
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")                  # Capture time after speedtest execution
 
-    else:
-        with open('results.txt') as f:                                      # Read the file containing the detailed speedtest results
-            for index, line in enumerate(f):                                             # Get each line of characters and provide index
-                if index == 1:
-                    print(f'Length of line at index {index}: {len(line)}')
-                    source_isp = line[13:-4].split("(")[0][:-1]                          # Get the source ISP
-                    source_ip = line[13:-4].split("(")[1][:-1]                           # Get the source IP address
-                elif index == 4:
-                    print(f'Length of line at index {index}: {len(line)}')
-                    target_isp = line.split(":")[0][10:].split("[")[0][:-1]              # Get the targer ISP
-                    target_km =  float(line.split(":")[0][10:].split("[")[1][:-4])       # Get the target distance in km
-                    ping_ms = float(line.split(":")[1][1:-4])                            # Get the _ms in ms
-                elif index == 6:
-                    print(f'Length of line at index {index}: {len(line)}')
-                    download_speed = float(line.split()[1])                              # Get the download speed in Mbps
-                elif index == 8:
-                    print(f'Length of line at index {index}: {len(line)}')
-                    upload_speed = float(line.split()[1])                                # Get the upload speed in Mbps
-            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")                  # Capture time after speedtest execution
+        # Print the output in the terminal
+        # Need to implement try-catch for cases where target_isp is undefined
+        # print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Ping: {ping_ms} ms, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps')
 
-            # Print the output in the terminal
-            # Need to implement try-catch for cases where target_isp is undefined
-            # print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Ping: {ping_ms} ms, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps')
+        try:
+            target_isp                      # Check if target_isp was assigned a value
 
-            try:
-                print("")
-                print(f'Timestamp: {time_at_request}')
-                print(f'Client ISP: {source_isp} ({source_ip})')
-                print(f'Remote ISP: {target_isp} - {target_km:.2f} km)')
-                print(f'Ping: {ping_ms:.2f} ms, Download: {download_speed:.2f} Mbps, Upload: {upload_speed:.2f} Mbps')
-                print("")
+        except Exception as value_error:
+            print(f'{value_error}')
+            time.sleep(5)
+            print("Restart speedtest 2")
+            perform_speed_test(filename, interval_seconds)
 
-            except Exception as value_error:
-                print(f'{value_error}')
-                time.sleep(5)
-                print("Restart speedtest")
-                perform_speed_test(filename, interval_seconds)
+        else:
+            print("")
+            print(f'Timestamp: {time_at_request}')
+            print(f'Client ISP: {source_isp} ({source_ip})')
+            print(f'Remote ISP: {target_isp} - {target_km:.2f} km)')
+            print(f'Ping: {ping_ms:.2f} ms, Download: {download_speed:.2f} Mbps, Upload: {upload_speed:.2f} Mbps')
+            print("")
 
-            t1 = datetime.strptime(time_at_request[11:], "%H:%M:%S")            # Format time to strptime formats
-            t2 = datetime.strptime(current_time[11:], "%H:%M:%S")               # Format time to strptime formats
-            delta = t2 - t1                                                     # Get the difference between time stamps
-            adjusted_interval_seconds = datetime.strptime(str(interval_seconds), "%S") - delta  # Adjust delay of succeeding speedtest execution
+        t1 = datetime.strptime(time_at_request[11:], "%H:%M:%S")            # Format time to strptime formats
+        t2 = datetime.strptime(current_time[11:], "%H:%M:%S")               # Format time to strptime formats
+        delta = t2 - t1                                                     # Get the difference between time stamps
+        adjusted_interval_seconds = datetime.strptime(str(interval_seconds), "%S") - delta  # Adjust delay of succeeding speedtest execution
 
-            # Execute recording of the data to the CSV file
-            record_speed_test_results(filename, current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed)
+        # Execute recording of the data to the CSV file
+        record_speed_test_results(filename, current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed)
 
-            time.sleep(int(adjusted_interval_seconds.strftime("%S")))   # Apply the adjusted time delay for next speedtest execution
+        time.sleep(int(adjusted_interval_seconds.strftime("%S")))   # Apply the adjusted time delay for next speedtest execution
 
 # The function to insert the speedtest results to the CSV file
 def record_speed_test_results(filename, current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed):
@@ -83,14 +79,19 @@ def main(filename, interval_seconds, num_tests):
         writer = csv.writer(file)
         if file.tell() == 0:
             writer.writerow(['Timestamp', 'Source ISP', 'Source IP', 'Target ISP', 'Target Distance (km)' ,'Ping (ms)', 'Download Speed (Mbps)', 'Upload Speed (Mbps)'])
-    for _ in range(num_tests):
-        perform_speed_test(filename, interval_seconds)
 
+    if (num_tests == "unlimited"):
+        while True:
+            perform_speed_test(filename, interval_seconds)
+    else:
+        for _ in range(num_tests):
+            perform_speed_test(filename, interval_seconds)
 
 if __name__ == "__main__":
     filename = 'speed_test_results_Converge2.4G.csv'
     interval_seconds = 30 # minumum of 30 seconds
-    num_tests = 600 # Approvimately 5 hours
+    # num_tests = 600 # Approvimately 5 hours
+    num_tests = "unlimited"
     main(filename, interval_seconds, num_tests) # Calling the main method
 
 '''
