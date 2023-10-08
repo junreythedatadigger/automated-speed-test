@@ -34,28 +34,28 @@ def perform_speed_test(filename, interval_seconds):
             elif index == 8:
                 # print(f'Length of line at index {index}: {len(line)}')
                 upload_speed = float(line.split()[1])                                # Get the upload speed in Mbps
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")                  # Capture time after speedtest execution
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")                  # Capture time after speedtest execution
 
-        # Print the output in the terminal
-        # Need to implement try-catch for cases where target_isp is undefined
-        # print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Ping: {ping_ms} ms, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps')
+    # Print the output in the terminal
+    # Need to implement try-catch for cases where target_isp is undefined
+    # print(f'Time: {current_time}, Source: {source_isp} ({source_ip}), Target: {target_isp} - {target_km} km, Ping: {ping_ms} ms, Download: {download_speed} Mbps, Upload: {upload_speed} Mbps')
 
-        try:
-            target_isp                      # Check if target_isp was assigned a value
+    try:
+        target_isp                      # Check if target_isp was assigned a value
 
-        except Exception as value_error:
-            print(f'{value_error}')
-            time.sleep(5)
-            print("Restart speedtest 2")
-            perform_speed_test(filename, interval_seconds)
+    except Exception as value_error:
+        print(f'{value_error}')
+        time.sleep(5)
+        print("Restart speedtest 2")
+        perform_speed_test(filename, interval_seconds)
 
-        else:
-            print("")
-            print(f'Timestamp: {time_at_request}')
-            print(f'Client ISP: {source_isp} ({source_ip})')
-            print(f'Remote ISP: {target_isp} - {target_km:.2f} km)')
-            print(f'Ping: {ping_ms:.2f} ms, Download: {download_speed:.2f} Mbps, Upload: {upload_speed:.2f} Mbps')
-            print("")
+    else:
+        print("")
+        print(f'Timestamp: {time_at_request}')
+        print(f'Client ISP: {source_isp} ({source_ip})')
+        print(f'Remote ISP: {target_isp} - {target_km:.2f} km)')
+        print(f'Ping: {ping_ms:.2f} ms, Download: {download_speed:.2f} Mbps, Upload: {upload_speed:.2f} Mbps')
+        print("")
 
         t1 = datetime.strptime(time_at_request[11:], "%H:%M:%S")            # Format time to strptime formats
         t2 = datetime.strptime(current_time[11:], "%H:%M:%S")               # Format time to strptime formats
