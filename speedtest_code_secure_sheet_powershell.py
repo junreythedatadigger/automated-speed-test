@@ -92,8 +92,6 @@ def record_speed_test_results(filename, current_time, source_isp, source_ip, tar
 
     cell_rows = sheet.range('A'+str(index_last)+':H'+str(index_last))
 
-    # print(cell_rows)
-
     index = 0
 
     for cell in cell_rows:
@@ -101,9 +99,6 @@ def record_speed_test_results(filename, current_time, source_isp, source_ip, tar
         index += 1
 
     sheet.update_cells(cell_rows)
-
-    index_last += 1
-
 
 # The main method to call the other methods
 def main(filename, interval_seconds, num_tests, index_last):
@@ -115,9 +110,11 @@ def main(filename, interval_seconds, num_tests, index_last):
     if (num_tests == "unlimited"):
         while True:
             perform_speed_test(filename, interval_seconds, index_last)
+            index_last += 1
     else:
         for _ in range(num_tests):
             perform_speed_test(filename, interval_seconds, index_last)
+            index_last += 1
 
 
 if __name__ == "__main__":
