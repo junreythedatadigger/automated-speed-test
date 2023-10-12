@@ -15,11 +15,10 @@ from oauth2client.service_account import ServiceAccountCredentials
 # Credential file path
 absolute_path = os.path.dirname(__file__)                               # the current location of this project
 relative_path = "data-analyst-project-01-384107-9457afc61153.json"      # relative path credential
-full_path = os.path.join(absolute_path, relative_path)
+credentials_file = os.path.join(absolute_path, relative_path)
 
 # Google Sheets Settings
 spreadsheet_id = "139-CU26KtY9eJ6H8Vm8Ygp89l7d7q9M7_GjrJ0noBZU"
-credentials_file = full_path
 
 # Connect to Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
