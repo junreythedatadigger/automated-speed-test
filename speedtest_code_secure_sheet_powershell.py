@@ -83,11 +83,13 @@ def perform_speed_test(filename, interval_seconds, index_last):
 
 # The function to insert the speedtest results to the CSV file
 def record_speed_test_results(filename, current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed, index_last):
-    with open(filename, mode='a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed])
 
     data_list = [current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed]
+
+    with open(filename, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        # writer.writerow([current_time, source_isp, source_ip, target_isp, target_km, ping_ms, download_speed, upload_speed])
+        writer.writerow(data_list)
 
     cell_rows = sheet.range('A'+str(index_last)+':H'+str(index_last))
 
