@@ -62,7 +62,7 @@ def perform_speed_test(filename, interval_seconds, index_last):
         print(f'{value_error}')
         time.sleep(5)
         print("Restart speedtest execution")
-        perform_speed_test(filename, interval_seconds)
+        perform_speed_test(filename, interval_seconds, index_last)
 
     else:
         print("")
