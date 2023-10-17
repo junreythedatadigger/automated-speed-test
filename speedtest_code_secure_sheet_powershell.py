@@ -18,7 +18,9 @@ relative_path = "data-analyst-project-01-384107-9457afc61153.json"      # relati
 credentials_file = os.path.join(absolute_path, relative_path)
 
 # Google Sheets Settings
-spreadsheet_id = "139-CU26KtY9eJ6H8Vm8Ygp89l7d7q9M7_GjrJ0noBZU"
+# spreadsheet_id = "139-CU26KtY9eJ6H8Vm8Ygp89l7d7q9M7_GjrJ0noBZU"         # Speedtest_Data_Center
+spreadsheet_id = "1-vwjqAfnJo9ZedFntSDX8H88_mUsVkItWpxY8mwOk3k"         # Speedtest_Data_Converge
+
 
 # Connect to Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
